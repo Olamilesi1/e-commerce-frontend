@@ -1,45 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import styles from "../styles/cart.module.css";
 
-
 function Cart() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      price: 5000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      price: 3000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150",
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch cart items from the backend
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:7000/cart");
+        setCartItems(response.data);
+        setLoading(false);
+      } catch (error) {
+        toast.error("Failed to fetch cart items");
+        console.error("Error fetching cart items:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCartItems();
+  }, []);
 
   // Function to increase quantity
-  const increaseQuantity = (id) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
-    );
+  const increaseQuantity = async (id) => {
+    try {
+      const updatedItem = await axios.put(
+        `http://localhost:7000/cart/increase/${id}`
+      );
+      setCartItems((prevCartItems) =>
+        prevCartItems.map((item) =>
+          item.id === id ? updatedItem.data : item
+        )
+      );
+    } catch (error) {
+      toast.error("Failed to increase quantity");
+      console.error("Error increasing quantity:", error);
+    }
   };
 
   // Function to decrease quantity
-  const decreaseQuantity = (id) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
+  const decreaseQuantity = async (id) => {
+    try {
+      const updatedItem = await axios.put(
+        `http://localhost:7000/cart/decrease/${id}`
+      );
+      setCartItems((prevCartItems) =>
+        prevCartItems.map((item) =>
+          item.id === id ? updatedItem.data : item
+        )
+      );
+    } catch (error) {
+      toast.error("Failed to decrease quantity");
+      console.error("Error decreasing quantity:", error);
+    }
   };
 
   // Calculate total price
@@ -49,6 +65,14 @@ function Cart() {
       0
     );
   };
+
+  if (loading) {
+    return <div className={styles.loading}>Loading your cart...</div>;
+  }
+
+  if (!cartItems.length) {
+    return <div className={styles.emptyCart}>Your cart is empty!</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -101,4 +125,3 @@ function Cart() {
 }
 
 export default Cart;
-

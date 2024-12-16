@@ -1,4 +1,10 @@
+/* ====================Cart=================== */
 
+*{
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
   .container {
     padding: "2rem";
     font-family: "Arial; sans-serif";

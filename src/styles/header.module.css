@@ -1,0 +1,29 @@
+/* ====================Header=================== */
+* {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.headbody {
+  margin: 1rem;
+}
+
+.head {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.logo {
+  color: white;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  align-items: center;
+  background-color: black;
+  border-radius: 1rem;
+  padding: 0 1rem;
+}

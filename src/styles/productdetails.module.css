@@ -1,4 +1,10 @@
+/* ====================ProductDetail=================== */
 
+*{
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
   .container  {
     display: flex;
     gap: 2rem;

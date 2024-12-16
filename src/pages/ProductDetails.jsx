@@ -35,7 +35,7 @@ function ProductDetailPage() {
         quantity,
       };
 
-      await axios.post("http://localhost:7000/cart/add", cartData);
+      await axios.post("http://localhost:7000/cart/addcart", cartData);
       toast.success(`${product.name} added to cart!`);
 
       // Navigate to the cart page
